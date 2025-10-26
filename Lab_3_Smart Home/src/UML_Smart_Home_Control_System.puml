@@ -1,0 +1,66 @@
+@startuml
+top to bottom direction
+title Smart Home Control System
+
+skinparam BackgroundColor #FFFFFF
+skinparam ClassBackgroundColor #F8FAFC
+skinparam ClassBorderColor #1F2937
+skinparam ClassBorderThickness 2
+skinparam InterfaceBackgroundColor #EEF2FF
+skinparam InterfaceBorderColor #1F2937
+skinparam InterfaceBorderThickness 2
+
+
+interface Observer <<I>> {
+  +update(status: String)
+}
+
+interface Subject <<I>> {
+  +attach(o: Observer)
+  +detach(o: Observer)
+  +notifyObservers()
+}
+class SmartHomeHub <<C>> {
+  -static instance: SmartHomeHub
+  +getInstance(): SmartHomeHub
+  +registerFactory(brand:String, f: DeviceFactory)
+  +createDevice(type:String, brand:String): Device
+}
+Observer -[hidden]-> Subject
+Subject  -[hidden]-> SmartHomeHub
+
+
+abstract class Device <<A>> {
+  -observers: List<Observer>
+  +turnOn()
+  +turnOff()
+  +getStatus(): String
+}
+class Dashboard <<C>>
+
+
+class Light <<C>>
+class Thermostat <<C>>
+class Camera <<C>>
+
+interface DeviceFactory <<I>> {
+  +createLight(name:String): Device
+  +createThermostat(name:String): Device
+  +createCamera(name:String): Device
+}
+class PhilipsFactory <<C>>
+class XiaomiFactory  <<C>>
+class SamsungFactory <<C>>
+
+'=== Quan hệ ===
+Subject <|.. Device
+Observer <|- Dashboard
+Dashboard ..> Device : observes
+Device <|-- Light
+Device <|-- Thermostat
+Device <|-- Camera
+DeviceFactory <|.. PhilipsFactory
+DeviceFactory <|.. XiaomiFactory
+DeviceFactory <|.. SamsungFactory
+SmartHomeHub --> DeviceFactory : uses
+@enduml
