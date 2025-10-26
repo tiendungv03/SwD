@@ -54,13 +54,13 @@ class SamsungFactory <<C>>
 
 '=== Quan hệ ===
 Subject <|.. Device
-Observer <|- Dashboard
-Dashboard ..> Device : observes
+Observer <|.. Dashboard
+Dashboard --> Device : observes
 Device <|-- Light
 Device <|-- Thermostat
 Device <|-- Camera
 DeviceFactory <|.. PhilipsFactory
 DeviceFactory <|.. XiaomiFactory
 DeviceFactory <|.. SamsungFactory
-SmartHomeHub --> DeviceFactory : uses
+SmartHomeHub --> DeviceFactory
 @enduml
